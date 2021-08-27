@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
 import { Link } from 'react-router-dom';
+import { getTodos } from "./api"
 
 export const TodoList = () => {
     const [items, setItems] = useState([])
 
     useEffect(() => {
-        setItems([
-            {text: "foo", id: 0},
-            {text: "bar", id: 1},
-            {text: "bazz", id: 2},
-        ])
+        const fetchItems = async () => {
+            const todos = await getTodos()
+            setItems(todos)
+        }
+
+        fetchItems()
     }, [])
     return <div className="container">
         <div className="mt-3">
@@ -24,7 +26,7 @@ export const TodoList = () => {
                 <tbody>
                     {
                         items.map(todo => (
-                            <tr key={todo.id}>
+                            <tr key={todo._id}>
                                 <td>
                                     {todo.text}
                                 </td>
